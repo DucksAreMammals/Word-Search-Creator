@@ -23,11 +23,35 @@ def main():
             else:
                 dir_y = random.choice([1, -1])
 
-        print(dir_x, dir_y)
+        min_x = 0
+        min_y = 0
+        max_x = width - 1
+        max_y = height - 1
+
+        if dir_x == -1:
+            min_x = len(word) - 1
+
+        if dir_x == 1:
+            max_x = max_x - len(word)
+
+        if dir_y == -1:
+            min_y = len(word) - 1
+
+        if dir_y == 1:
+            max_y = max_y - len(word)
+
+        x = random.randint(min_x, max_x)
+        y = random.randint(min_y, max_y)
+
+        for i, letter in enumerate(word):
+            wordsearch[y + i * dir_y][x + i * dir_x] = letter
 
     for line in wordsearch:
         for letter in line:
-            print(str(letter) + " ", end="")
+            if letter == None:
+                print("- ", end="")
+            else:
+                print(letter + " ", end="")
         print()
 
 
