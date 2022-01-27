@@ -9,11 +9,13 @@ def main():
 
     with open("wordsearch.txt", "r") as file:
         for word in file.readlines():
-            words.append(word.strip())
+            words.append(word.strip().lower())
 
     wordsearch = [[None for i in range(width)] for j in range(height)]
 
     wordsearch = place_word(words, wordsearch)
+
+    print()
 
     if wordsearch != None:
         for line in wordsearch:
@@ -28,6 +30,8 @@ def main():
 
 
 def place_word(wordlist, wordsearch):
+    print(str(len(wordlist)))
+
     positions = []
 
     for dir_x in [-1, 0, 1]:
@@ -80,9 +84,6 @@ def place_word(wordlist, wordsearch):
                     return(added_wordsearch)
             else:
                 return added_wordsearch
-
-    if len(wordlist) > 1:
-        wordsearch = place_word(wordlist[1:], wordsearch)
 
     return None
 
