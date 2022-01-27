@@ -128,7 +128,7 @@ def place_word(wordlist, wordsearch):
 def create_html(wordsearch, words):
     with open('wordsearch.html', 'w') as file:
         file.write(
-            '<!doctype html><html style="font-family:monospace;font-size:2em"><head><title>Wordsearch</title></head><body><div style="border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block"')
+            '<!doctype html><html style="font-family:monospace;font-size:2em;white-space:nowrap"><head><title>Wordsearch</title></head><body><div style="border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block"')
 
         for row in wordsearch:
             for letter in row:
