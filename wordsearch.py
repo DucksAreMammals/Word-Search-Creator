@@ -1,4 +1,7 @@
+from cmath import inf
 import random
+
+min = inf
 
 
 def main():
@@ -48,7 +51,11 @@ def main():
 
 
 def place_word(wordlist, wordsearch):
-    print(str(len(wordlist)))
+    global min
+
+    if len(wordlist) < min:
+        min = len(wordlist)
+        print(min)
 
     positions = []
 
