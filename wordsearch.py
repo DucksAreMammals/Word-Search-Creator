@@ -2,6 +2,9 @@ import random
 
 
 def main():
+    letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+               'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
     width = int(input("Please enter the width of the wordsearch: "))
     height = int(input("Please enter the height of the wordsearch: "))
 
@@ -9,13 +12,26 @@ def main():
 
     with open("wordsearch.txt", "r") as file:
         for word in file.readlines():
-            words.append(word.strip().lower())
+            word = word.strip().upper()
+
+            real_word = ""
+
+            for letter in word:
+                if letter in letters:
+                    real_word += letter
+
+            words.append(real_word)
 
     wordsearch = [[None for i in range(width)] for j in range(height)]
 
     wordsearch = place_word(words, wordsearch)
 
     print()
+
+    for y, row in enumerate(wordsearch):
+        for x, letter in enumerate(row):
+            if letter == None:
+                wordsearch[y][x] = random.choice(letters)
 
     if wordsearch != None:
         for line in wordsearch:
