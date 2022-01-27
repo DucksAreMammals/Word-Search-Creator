@@ -3,9 +3,12 @@ import random
 import sys
 
 min = inf
+positions = []
 
 
 def main():
+    global positions
+
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
                'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
@@ -44,6 +47,9 @@ def main():
     print()
 
     if wordsearch != None:
+        for row in wordsearch:
+            positions.append(row.copy())
+
         for y, row in enumerate(wordsearch):
             for x, letter in enumerate(row):
                 if letter == None:
@@ -118,7 +124,7 @@ def place_word(wordlist, wordsearch):
                 returned = place_word(wordlist[1:], added_wordsearch)
 
                 if returned != None:
-                    return(added_wordsearch)
+                    return added_wordsearch
             else:
                 return added_wordsearch
 
@@ -126,9 +132,13 @@ def place_word(wordlist, wordsearch):
 
 
 def create_html(wordsearch, words):
+    global positions
+
+    print(positions)
+
     with open('wordsearch.html', 'w') as file:
         file.write(
-            '<!doctype html><html style="font-family:monospace;font-size:2em;white-space:nowrap"><head><title>Wordsearch</title><style>div{border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block}table{margin:2em 0;width:100%}</style></head><body><div>')
+            '<!doctype html><html style="font-family:monospace;font-size:2em;white-space:nowrap"><head><title>Wordsearch</title><style>div{border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block}table{margin:2em 0;width:100%}span{color:blue}</style></head><body><div>')
 
         for row in wordsearch:
             for letter in row:
@@ -153,10 +163,18 @@ def create_html(wordsearch, words):
 
         file.write('<div>')
 
-        for row in wordsearch:
-            for letter in row:
-                file.write(" ")
+        for y, row in enumerate(wordsearch):
+            for x, letter in enumerate(row):
+                file.write('&nbsp')
+
+                if positions[y][x] != None:
+                    file.write('<span>')
+
                 file.write(letter)
+
+                if positions[y][x] != None:
+                    file.write('</span>')
+
             file.write('<br>')
 
         file.write('</div>')
