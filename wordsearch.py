@@ -1,5 +1,6 @@
 from cmath import inf
 import random
+import sys
 
 min = inf
 
@@ -8,8 +9,15 @@ def main():
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
                'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
-    width = int(input("Please enter the width of the wordsearch: "))
-    height = int(input("Please enter the height of the wordsearch: "))
+    try:
+        width = int(sys.argv[1])
+        height = int(sys.argv[2])
+    except IndexError:
+        print('Usage: wordsearch.py width height')
+        quit()
+    except ValueError:
+        print('Width and height must be integers')
+        quit()
 
     words = []
 
