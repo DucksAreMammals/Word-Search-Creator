@@ -161,7 +161,7 @@ def create_html(wordsearch, words):
 
         file.write('</table>')
 
-        file.write('<div>')
+        # file.write('<div>')
 
         # for y, row in enumerate(wordsearch):
         #     for x, letter in enumerate(row):
