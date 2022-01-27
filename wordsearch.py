@@ -128,7 +128,7 @@ def place_word(wordlist, wordsearch):
 def create_html(wordsearch, words):
     with open('wordsearch.html', 'w') as file:
         file.write(
-            '<!doctype html><html style="font-family:monospace;font-size:2em;white-space:nowrap"><head><title>Wordsearch</title></head><body><div style="border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block"')
+            '<!doctype html><html style="font-family:monospace;font-size:2em;white-space:nowrap"><head><title>Wordsearch</title><style>div{border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block}table{margin:2em 0;width:100%}</style></head><body><div>')
 
         for row in wordsearch:
             for letter in row:
@@ -136,7 +136,7 @@ def create_html(wordsearch, words):
                 file.write(letter)
             file.write('<br>')
 
-        file.write('</div><table style="margin:2em 0;width: 100%">')
+        file.write('</div><table>')
 
         for i, word in enumerate(words):
             if i % 3 == 0:
@@ -149,7 +149,19 @@ def create_html(wordsearch, words):
             if i % 3 == 2:
                 file.write('</tr>')
 
-        file.write("</table></body></html>")
+        file.write('</table>')
+
+        file.write('<div>')
+
+        for row in wordsearch:
+            for letter in row:
+                file.write(" ")
+                file.write(letter)
+            file.write('<br>')
+
+        file.write('</div>')
+
+        file.write("</body></html>")
 
 
 if __name__ == '__main__':
