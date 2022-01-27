@@ -127,14 +127,14 @@ def create_html(wordsearch, words):
         file.write('</div><table style="margin:2em 0;width: 100%">')
 
         for i, word in enumerate(words):
-            if i % 6 == 0:
+            if i % 5 == 0:
                 file.write('<tr>')
 
             file.write('<td>')
             file.write(word)
             file.write(' </td>')
 
-            if i % 6 == 5:
+            if i % 5 == 4:
                 file.write('</tr>')
 
         file.write("</table></body></html>")
