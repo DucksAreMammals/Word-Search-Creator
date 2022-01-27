@@ -28,11 +28,11 @@ def main():
 
     words = []
 
-    with open("wordsearch.txt", "r") as file:
+    with open('wordsearch.txt', 'r') as file:
         for word in file.readlines():
             word = word.strip().upper()
 
-            real_word = ""
+            real_word = ''
 
             for letter in word:
                 if letter in letters:
@@ -58,14 +58,14 @@ def main():
         for line in wordsearch:
             for letter in line:
                 if letter == None:
-                    print("- ", end="")
+                    print('- ', end='')
                 else:
-                    print(letter + " ", end="")
+                    print(letter + ' ', end='')
             print()
 
         create_html(wordsearch, words)
     else:
-        print("Cannot fit")
+        print('Cannot fit')
 
 
 def place_word(wordlist, wordsearch):
@@ -134,15 +134,13 @@ def place_word(wordlist, wordsearch):
 def create_html(wordsearch, words):
     global positions
 
-    print(positions)
-
     with open('wordsearch.html', 'w') as file:
         file.write(
-            '<!doctype html><html style="font-family:monospace;font-size:2em;white-space:nowrap"><head><title>Wordsearch</title><style>div{border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block}table{margin:2em 0;width:100%}span{color:blue}</style></head><body><div>')
+            '<!doctype html><html><head><title>Wordsearch</title><style>html{font-family:monospace;font-size:2em;white-space:nowrap;text-align:center}div{border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block}table{text-align:left;margin:2em 0;width:100%}span{color:blue}</style></head><body><div>')
 
         for row in wordsearch:
             for letter in row:
-                file.write(" ")
+                file.write(' ')
                 file.write(letter)
             file.write('<br>')
 
@@ -179,7 +177,7 @@ def create_html(wordsearch, words):
 
         # file.write('</div>')
 
-        file.write("</body></html>")
+        file.write('</body></html>')
 
 
 if __name__ == '__main__':
