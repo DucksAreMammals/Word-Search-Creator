@@ -14,10 +14,14 @@ def main():
         height = int(sys.argv[2])
     except IndexError:
         print('Usage: wordsearch.py width height')
-        quit()
+        print('Default is 10 10')
+        width = 10
+        height = 10
     except ValueError:
         print('Width and height must be integers')
-        quit()
+        print('Default is 10 10')
+        width = 10
+        height = 10
 
     words = []
 
@@ -39,12 +43,12 @@ def main():
 
     print()
 
-    for y, row in enumerate(wordsearch):
-        for x, letter in enumerate(row):
-            if letter == None:
-                wordsearch[y][x] = random.choice(letters)
-
     if wordsearch != None:
+        for y, row in enumerate(wordsearch):
+            for x, letter in enumerate(row):
+                if letter == None:
+                    wordsearch[y][x] = random.choice(letters)
+
         for line in wordsearch:
             for letter in line:
                 if letter == None:
@@ -52,10 +56,10 @@ def main():
                 else:
                     print(letter + " ", end="")
             print()
+
+        create_html(wordsearch, words)
     else:
         print("Cannot fit")
-
-    create_html(wordsearch, words)
 
 
 def place_word(wordlist, wordsearch):
@@ -124,7 +128,7 @@ def place_word(wordlist, wordsearch):
 def create_html(wordsearch, words):
     with open('wordsearch.html', 'w') as file:
         file.write(
-            '<!doctype html><html style="font-family:monospace"><head><title>Wordsearch</title></head><body><div style="border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block"')
+            '<!doctype html><html style="font-family:monospace;font-size:2em"><head><title>Wordsearch</title></head><body><div style="border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block"')
 
         for row in wordsearch:
             for letter in row:
@@ -135,14 +139,14 @@ def create_html(wordsearch, words):
         file.write('</div><table style="margin:2em 0;width: 100%">')
 
         for i, word in enumerate(words):
-            if i % 5 == 0:
+            if i % 3 == 0:
                 file.write('<tr>')
 
             file.write('<td>')
             file.write(word)
             file.write(' </td>')
 
-            if i % 5 == 4:
+            if i % 3 == 2:
                 file.write('</tr>')
 
         file.write("</table></body></html>")
