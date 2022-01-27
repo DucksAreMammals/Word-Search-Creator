@@ -44,6 +44,8 @@ def main():
     else:
         print("Cannot fit")
 
+    create_html(wordsearch, words)
+
 
 def place_word(wordlist, wordsearch):
     print(str(len(wordlist)))
@@ -102,6 +104,33 @@ def place_word(wordlist, wordsearch):
                 return added_wordsearch
 
     return None
+
+
+def create_html(wordsearch, words):
+    with open('wordsearch.html', 'w') as file:
+        file.write(
+            '<!doctype html><html style="font-family:monospace"><head><title>Wordsearch</title></head><body><div style="border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block"')
+
+        for row in wordsearch:
+            for letter in row:
+                file.write(" ")
+                file.write(letter)
+            file.write('<br>')
+
+        file.write('</div><table style="margin:2em 0;width: 100%">')
+
+        for i, word in enumerate(words):
+            if i % 6 == 0:
+                file.write('<tr>')
+
+            file.write('<td>')
+            file.write(word)
+            file.write(' </td>')
+
+            if i % 6 == 5:
+                file.write('</tr>')
+
+        file.write("</table></body></html>")
 
 
 if __name__ == '__main__':
