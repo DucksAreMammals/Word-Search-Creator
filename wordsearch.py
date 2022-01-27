@@ -14,37 +14,49 @@ def main():
     wordsearch = [[None for i in range(width)] for j in range(height)]
 
     for word in words:
-        dir_x = random.randint(-1, 1)
-        dir_y = random.randint(-1, 1)
+        placed = False
 
-        if dir_x == 0 and dir_y == 0:
-            if random.random() > 0.5:
-                dir_x = random.choice([1, -1])
-            else:
-                dir_y = random.choice([1, -1])
+        while not placed:
+            dir_x = random.randint(-1, 1)
+            dir_y = random.randint(-1, 1)
 
-        min_x = 0
-        min_y = 0
-        max_x = width - 1
-        max_y = height - 1
+            if dir_x == 0 and dir_y == 0:
+                if random.random() > 0.5:
+                    dir_x = random.choice([1, -1])
+                else:
+                    dir_y = random.choice([1, -1])
 
-        if dir_x == -1:
-            min_x = len(word) - 1
+            min_x = 0
+            min_y = 0
+            max_x = width - 1
+            max_y = height - 1
 
-        if dir_x == 1:
-            max_x = max_x - len(word)
+            if dir_x == -1:
+                min_x = len(word) - 1
 
-        if dir_y == -1:
-            min_y = len(word) - 1
+            if dir_x == 1:
+                max_x = max_x - len(word) + 1
 
-        if dir_y == 1:
-            max_y = max_y - len(word)
+            if dir_y == -1:
+                min_y = len(word) - 1
 
-        x = random.randint(min_x, max_x)
-        y = random.randint(min_y, max_y)
+            if dir_y == 1:
+                max_y = max_y - len(word) + 1
 
-        for i, letter in enumerate(word):
-            wordsearch[y + i * dir_y][x + i * dir_x] = letter
+            x = random.randint(min_x, max_x)
+            y = random.randint(min_y, max_y)
+
+            can_place = True
+            for i, letter in enumerate(word):
+                if wordsearch[y + i * dir_y][x + i * dir_x] not in [letter, None]:
+                    can_place = False
+                    break
+
+            if can_place:
+                placed = True
+
+                for i, letter in enumerate(word):
+                    wordsearch[y + i * dir_y][x + i * dir_x] = letter
 
     for line in wordsearch:
         for letter in line:
