@@ -16,20 +16,29 @@ def main():
         width = int(sys.argv[1])
         height = int(sys.argv[2])
     except IndexError:
-        print('Usage: wordsearch.py width height')
-        print('Default is 10 10')
+        print('Usage: wordsearch.py width height wordsfilename')
+        print('Default is 10 10 wordsearch.txt None')
         width = 10
         height = 10
     except ValueError:
         print('Width and height must be integers')
-        print('Default is 10 10')
+        print('Usage: wordsearch.py width height wordsfilename')
+        print('Default is 10 10 wordsearch.txt None')
         width = 10
         height = 10
+
+    try:
+        filename = sys.argv[3]
+    except IndexError:
+        print('Filename defaults to wordsearch.txt')
+        print('Usage: wordsearch.py width height wordsfilename')
+        print('This defaults to 10 10 wordsearch.txt None')
+        filename = 'wordsearch.txt'
 
     words = []
     unformatted_words = []
 
-    with open('wordsearch.txt', 'r') as file:
+    with open(filename, 'r') as file:
         for word in file.readlines():
             word = word.strip().upper()
 
