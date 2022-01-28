@@ -1,7 +1,6 @@
 from cmath import inf
 import random
 import sys
-from tkinter import W
 
 min = inf
 positions = []
