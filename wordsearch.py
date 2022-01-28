@@ -211,6 +211,13 @@ def create_image(wordsearch, words):
 
     ctx = ImageDraw.Draw(search_image)
 
+    draw_wordsearch(ctx, wordsearch, words, font,
+                    width, height, columns, max_width)
+
+    search_image.save('wordsearch.png')
+
+
+def draw_wordsearch(ctx, wordsearch, words, font, width, height, columns, max_width):
     # Draw box
 
     margin = 16
@@ -244,8 +251,6 @@ def create_image(wordsearch, words):
 
         ctx.text((i * max_width * 64 + 64, start_y),
                  string, (0, 0, 0), font, spacing=18)
-
-    search_image.save('wordsearch.png')
 
 
 def print_search(wordsearch):
