@@ -27,6 +27,7 @@ def main():
         height = 10
 
     words = []
+    unformatted_words = []
 
     with open('wordsearch.txt', 'r') as file:
         for word in file.readlines():
@@ -38,6 +39,7 @@ def main():
                 if letter in letters:
                     real_word += letter
 
+            unformatted_words.append(word)
             words.append(real_word)
 
     wordsearch = [[None for i in range(width)] for j in range(height)]
@@ -63,7 +65,7 @@ def main():
                     print(letter + ' ', end='')
             print()
 
-        create_html(wordsearch, words)
+        create_html(wordsearch, unformatted_words)
     else:
         print('Cannot fit')
 
@@ -79,30 +81,27 @@ def place_word(wordlist, wordsearch):
 
     for dir_x in [-1, 0, 1]:
         for dir_y in [-1, 0, 1]:
+            if dir_x != 0 or dir_y != 0:
+                min_x = 0
+                min_y = 0
+                max_x = len(wordsearch[0]) - 1
+                max_y = len(wordsearch) - 1
 
-            if dir_x == 0 and dir_y == 0:
-                continue
+                if dir_x == -1:
+                    min_x = len(wordlist[0]) - 1
 
-            min_x = 0
-            min_y = 0
-            max_x = len(wordsearch[0]) - 1
-            max_y = len(wordsearch) - 1
+                if dir_x == 1:
+                    max_x = max_x - len(wordlist[0]) + 1
 
-            if dir_x == -1:
-                min_x = len(wordlist[0]) - 1
+                if dir_y == -1:
+                    min_y = len(wordlist[0]) - 1
 
-            if dir_x == 1:
-                max_x = max_x - len(wordlist[0]) + 1
+                if dir_y == 1:
+                    max_y = max_y - len(wordlist[0]) + 1
 
-            if dir_y == -1:
-                min_y = len(wordlist[0]) - 1
-
-            if dir_y == 1:
-                max_y = max_y - len(wordlist[0]) + 1
-
-            for x in range(min_x, max_x + 1):
-                for y in range(min_y, max_y + 1):
-                    positions.append((x, y, dir_x, dir_y))
+                for x in range(min_x, max_x + 1):
+                    for y in range(min_y, max_y + 1):
+                        positions.append((x, y, dir_x, dir_y))
 
     random.shuffle(positions)
 
@@ -114,8 +113,10 @@ def place_word(wordlist, wordsearch):
                 break
 
         if can_place:
-            added_wordsearch = wordsearch
-            placed = True
+            added_wordsearch = []
+
+            for row in wordsearch:
+                added_wordsearch.append(row.copy())
 
             for i, letter in enumerate(wordlist[0]):
                 added_wordsearch[y + i * dir_y][x + i * dir_x] = letter
