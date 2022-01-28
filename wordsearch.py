@@ -81,7 +81,8 @@ def place_word(wordlist, wordsearch):
         min = len(wordlist)
         print(min)
 
-    positions = []
+    weak_positions = []
+    strong_positions = []
 
     for dir_x in [-1, 0, 1]:
         for dir_y in [-1, 0, 1]:
@@ -105,33 +106,43 @@ def place_word(wordlist, wordsearch):
 
                 for x in range(min_x, max_x + 1):
                     for y in range(min_y, max_y + 1):
-                        positions.append((x, y, dir_x, dir_y))
+                        strong = False
+                        can_place = True
+                        for i, letter in enumerate(wordlist[0]):
+                            word_letter = wordsearch[y+i*dir_y][x+i*dir_x]
 
-    random.shuffle(positions)
+                            if word_letter == letter:
+                                strong = True
+                            elif word_letter != None:
+                                can_place = False
+
+                        if can_place:
+                            if strong:
+                                strong_positions.append((x, y, dir_x, dir_y))
+                            else:
+                                weak_positions.append((x, y, dir_x, dir_y))
+
+    random.shuffle(strong_positions)
+    random.shuffle(weak_positions)
+
+    positions = strong_positions + weak_positions
 
     for x, y, dir_x, dir_y in positions:
-        can_place = True
+        added_wordsearch = []
+
+        for row in wordsearch:
+            added_wordsearch.append(row.copy())
+
         for i, letter in enumerate(wordlist[0]):
-            if wordsearch[y + i * dir_y][x + i * dir_x] not in [letter, None]:
-                can_place = False
-                break
+            added_wordsearch[y + i * dir_y][x + i * dir_x] = letter
 
-        if can_place:
-            added_wordsearch = []
+        if len(wordlist) > 1:
+            returned = place_word(wordlist[1:], added_wordsearch)
 
-            for row in wordsearch:
-                added_wordsearch.append(row.copy())
-
-            for i, letter in enumerate(wordlist[0]):
-                added_wordsearch[y + i * dir_y][x + i * dir_x] = letter
-
-            if len(wordlist) > 1:
-                returned = place_word(wordlist[1:], added_wordsearch)
-
-                if returned != None:
-                    return returned
-            else:
-                return added_wordsearch
+            if returned != None:
+                return returned
+        else:
+            return added_wordsearch
 
     return None
 
