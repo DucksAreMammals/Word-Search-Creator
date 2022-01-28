@@ -1,6 +1,7 @@
 from cmath import inf
 import random
 import sys
+from tkinter import W
 
 min = inf
 positions = []
@@ -57,13 +58,7 @@ def main():
                 if letter == None:
                     wordsearch[y][x] = random.choice(letters)
 
-        for line in wordsearch:
-            for letter in line:
-                if letter == None:
-                    print('- ', end='')
-                else:
-                    print(letter + ' ', end='')
-            print()
+        print_search(wordsearch)
 
         create_html(wordsearch, unformatted_words)
     else:
@@ -125,7 +120,7 @@ def place_word(wordlist, wordsearch):
                 returned = place_word(wordlist[1:], added_wordsearch)
 
                 if returned != None:
-                    return added_wordsearch
+                    return returned
             else:
                 return added_wordsearch
 
@@ -179,6 +174,16 @@ def create_html(wordsearch, words):
         # file.write('</div>')
 
         file.write('</body></html>')
+
+
+def print_search(wordsearch):
+    for line in wordsearch:
+        for letter in line:
+            if letter == None:
+                print('- ', end='')
+            else:
+                print(letter + ' ', end='')
+        print()
 
 
 if __name__ == '__main__':
