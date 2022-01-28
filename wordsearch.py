@@ -34,14 +34,15 @@ def main():
         for word in file.readlines():
             word = word.strip().upper()
 
-            real_word = ''
+            if word != '':
+                real_word = ''
 
-            for letter in word:
-                if letter in letters:
-                    real_word += letter
+                for letter in word:
+                    if letter in letters:
+                        real_word += letter
 
-            unformatted_words.append(word)
-            words.append(real_word)
+                unformatted_words.append(word)
+                words.append(real_word)
 
     wordsearch = [[None for i in range(width)] for j in range(height)]
 
