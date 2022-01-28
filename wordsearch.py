@@ -152,7 +152,7 @@ def create_html(wordsearch, words):
 
     with open('wordsearch.html', 'w') as file:
         file.write(
-            '<!doctype html><html><head><title>Wordsearch</title><style>html{font-family:monospace;font-size:2em;white-space:nowrap;text-align:center}div{border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block}table{text-align:left;margin:2em 0;width:100%}span{color:blue}</style></head><body><div>')
+            '<!doctype html><html><head><title>Wordsearch</title><style>html{font-family:monospace;font-size:2em;white-space:nowrap;text-align:center}div{border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block}table{text-align:left;margin:2em 0;width:100%}span{color:blue}td{padding-left:1em}</style></head><body><div>')
 
         for row in wordsearch:
             for letter in row:
