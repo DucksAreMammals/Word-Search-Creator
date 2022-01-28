@@ -1,8 +1,9 @@
-from cmath import inf
 import random
 import sys
+from PIL import Image, ImageDraw, ImageFont
+import math
 
-min = inf
+min = math.inf
 positions = []
 
 
@@ -70,6 +71,7 @@ def main():
         print_search(wordsearch)
 
         create_html(wordsearch, unformatted_words)
+        create_image(wordsearch, unformatted_words)
     else:
         print('Cannot fit')
 
@@ -194,6 +196,56 @@ def create_html(wordsearch, words):
         # file.write('</div>')
 
         file.write('</body></html>')
+
+
+def create_image(wordsearch, words):
+    width = len(wordsearch[0]) * 64 + 64
+    height = len(wordsearch) * 64 + 64
+
+    max_width = max([len(word) for word in words])
+    columns = width // (max_width * 64)
+
+    search_image = Image.new(
+        'RGB', (width, height + math.ceil(len(words) / columns) * 76 + 64), (255, 255, 255))
+    font = ImageFont.truetype('LiberationMono-Regular.ttf', 64)
+
+    ctx = ImageDraw.Draw(search_image)
+
+    # Draw box
+
+    margin = 16
+    line_width = 8
+
+    start_corner = margin - line_width / 2
+    right = width - margin - line_width / 2
+    bottom = height - margin - line_width / 2
+
+    shape = (start_corner, start_corner, right, start_corner, right, bottom,
+             start_corner, bottom, start_corner, start_corner, start_corner, right)
+
+    ctx.line(shape, (0, 0, 0), line_width, 'curve')
+
+    # Draw letters
+
+    for y, row in enumerate(wordsearch):
+        for x, letter in enumerate(row):
+            ctx.text((x * 64 + 40, y * 64 + 30), letter, (0, 0, 0), font)
+
+    # Draw words
+
+    start_y = height + 64
+
+    for i in range(columns):
+        string = ""
+
+        for word in words[i * math.ceil(len(words) / columns): (i + 1) * math.ceil(len(words) / columns)]:
+            string += word
+            string += "\n"
+
+        ctx.text((i * max_width * 64 + 64, start_y),
+                 string, (0, 0, 0), font, spacing=18)
+
+    search_image.save('wordsearch.png')
 
 
 def print_search(wordsearch):
