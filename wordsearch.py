@@ -6,6 +6,8 @@ import math
 min = math.inf
 positions = []
 
+answer_key = []
+
 
 def main():
     global positions
@@ -142,10 +144,13 @@ def place_word(wordlist, wordsearch):
             returned = place_word(wordlist[1:], added_wordsearch)
 
             if returned != None:
+                answer_key.append((x, y, dir_x, dir_y, len(wordlist[0])))
                 return returned
         else:
+            answer_key.append((x, y, dir_x, dir_y, len(wordlist[0])))
             return added_wordsearch
 
+    answer_key.pop()
     return None
 
 
@@ -215,6 +220,25 @@ def create_image(wordsearch, words):
                     width, height, columns, max_width)
 
     search_image.save('wordsearch.png')
+
+    # Draw answer key
+
+    answer_image = Image.new('RGB', (width, height), (255, 255, 255))
+
+    answer_ctx = ImageDraw.Draw(answer_image)
+
+    draw_wordsearch(answer_ctx, wordsearch, words, font,
+                    width, height, columns, max_width)
+
+    for answer in answer_key:
+        line = (answer[0] * 64 + 58,
+                answer[1] * 64 + 62,
+                (answer[0] + answer[2] * (answer[4] - 1)) * 64 + 58,
+                (answer[1] + answer[3] * (answer[4] - 1)) * 64 + 62)
+
+        answer_ctx.line(line, (0, 0, 0))
+
+    answer_image.save('wordsearch_answer.png')
 
 
 def draw_wordsearch(ctx, wordsearch, words, font, width, height, columns, max_width):
