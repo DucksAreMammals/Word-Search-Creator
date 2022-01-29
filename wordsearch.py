@@ -20,22 +20,22 @@ def main():
         height = int(sys.argv[2])
     except IndexError:
         print('Usage: wordsearch.py width height wordsfilename')
-        print('Default is 10 10 wordsearch.txt None')
-        width = 10
-        height = 10
+        print('Default is 25 25 wordsearch.txt None')
+        width = 25
+        height = 25
     except ValueError:
         print('Width and height must be integers')
         print('Usage: wordsearch.py width height wordsfilename')
-        print('Default is 10 10 wordsearch.txt None')
-        width = 10
-        height = 10
+        print('Default is 25 25 wordsearch.txt None')
+        width = 25
+        height = 25
 
     try:
         filename = sys.argv[3]
     except IndexError:
         print('Filename defaults to wordsearch.txt')
         print('Usage: wordsearch.py width height wordsfilename')
-        print('This defaults to 10 10 wordsearch.txt None')
+        print('This defaults to 25 25 wordsearch.txt None')
         filename = 'wordsearch.txt'
 
     words = []
@@ -55,7 +55,7 @@ def main():
                 unformatted_words.append(word)
                 words.append(real_word)
 
-    wordsearch = [[None for i in range(width)] for j in range(height)]
+    wordsearch = [[[None for i in range(width)] for j in range(height)], []]
 
     wordsearch = place_word(words, wordsearch)
 
@@ -65,10 +65,10 @@ def main():
         for row in wordsearch:
             positions.append(row.copy())
 
-        for y, row in enumerate(wordsearch):
+        for y, row in enumerate(wordsearch[0]):
             for x, letter in enumerate(row):
                 if letter == None:
-                    wordsearch[y][x] = random.choice(letters)
+                    wordsearch[0][y][x] = random.choice(letters)
 
         print_search(wordsearch)
 
@@ -93,8 +93,8 @@ def place_word(wordlist, wordsearch):
             if dir_x != 0 or dir_y != 0:
                 min_x = 0
                 min_y = 0
-                max_x = len(wordsearch[0]) - 1
-                max_y = len(wordsearch) - 1
+                max_x = len(wordsearch[0][0]) - 1
+                max_y = len(wordsearch[0]) - 1
 
                 if dir_x == -1:
                     min_x = len(wordlist[0]) - 1
@@ -113,7 +113,7 @@ def place_word(wordlist, wordsearch):
                         strong = False
                         can_place = True
                         for i, letter in enumerate(wordlist[0]):
-                            word_letter = wordsearch[y+i*dir_y][x+i*dir_x]
+                            word_letter = wordsearch[0][y+i*dir_y][x+i*dir_x]
 
                             if word_letter == letter:
                                 strong = True
@@ -132,25 +132,26 @@ def place_word(wordlist, wordsearch):
     positions = strong_positions + weak_positions
 
     for x, y, dir_x, dir_y in positions:
-        added_wordsearch = []
+        added_wordsearch = [[], []]
 
-        for row in wordsearch:
-            added_wordsearch.append(row.copy())
+        for row in wordsearch[0]:
+            added_wordsearch[0].append(row.copy())
+
+        added_wordsearch[1] = wordsearch[1].copy()
 
         for i, letter in enumerate(wordlist[0]):
-            added_wordsearch[y + i * dir_y][x + i * dir_x] = letter
+            added_wordsearch[0][y + i * dir_y][x + i * dir_x] = letter
+
+        added_wordsearch[1].append((x, y, dir_x, dir_y, len(wordlist[0])))
 
         if len(wordlist) > 1:
             returned = place_word(wordlist[1:], added_wordsearch)
 
             if returned != None:
-                answer_key.append((x, y, dir_x, dir_y, len(wordlist[0])))
                 return returned
         else:
-            answer_key.append((x, y, dir_x, dir_y, len(wordlist[0])))
             return added_wordsearch
 
-    answer_key.pop()
     return None
 
 
@@ -161,7 +162,7 @@ def create_html(wordsearch, words):
         file.write(
             '<!doctype html><html><head><title>Wordsearch</title><style>html{font-family:monospace;font-size:2em;white-space:nowrap;text-align:center}div{border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block}table{text-align:left;margin:2em 0;width:100%}span{color:blue}td{padding-left:1em}</style></head><body><div>')
 
-        for row in wordsearch:
+        for row in wordsearch[0]:
             for letter in row:
                 file.write(' ')
                 file.write(letter)
@@ -204,8 +205,8 @@ def create_html(wordsearch, words):
 
 
 def create_image(wordsearch, words):
-    width = len(wordsearch[0]) * 64 + 64
-    height = len(wordsearch) * 64 + 64
+    width = len(wordsearch[0][0]) * 64 + 64
+    height = len(wordsearch[0]) * 64 + 64
 
     max_width = max([len(word) for word in words])
     columns = width // (max_width * 64)
@@ -230,7 +231,7 @@ def create_image(wordsearch, words):
     draw_wordsearch(answer_ctx, wordsearch, words, font,
                     width, height, columns, max_width)
 
-    for answer in answer_key:
+    for answer in wordsearch[1]:
         line = (answer[0] * 64 + 58,
                 answer[1] * 64 + 62,
                 (answer[0] + answer[2] * (answer[4] - 1)) * 64 + 58,
@@ -258,7 +259,7 @@ def draw_wordsearch(ctx, wordsearch, words, font, width, height, columns, max_wi
 
     # Draw letters
 
-    for y, row in enumerate(wordsearch):
+    for y, row in enumerate(wordsearch[0]):
         for x, letter in enumerate(row):
             ctx.text((x * 64 + 40, y * 64 + 30), letter, (0, 0, 0), font)
 
@@ -278,7 +279,7 @@ def draw_wordsearch(ctx, wordsearch, words, font, width, height, columns, max_wi
 
 
 def print_search(wordsearch):
-    for line in wordsearch:
+    for line in wordsearch[0]:
         for letter in line:
             if letter == None:
                 print('- ', end='')
