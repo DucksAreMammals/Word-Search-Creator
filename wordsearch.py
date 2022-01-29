@@ -196,6 +196,8 @@ def create_image(wordsearch, words):
 
     start_y = height + 64
 
+    # Draw words
+
     for i in range(columns):
         string = ""
 
@@ -203,7 +205,10 @@ def create_image(wordsearch, words):
             string += word
             string += "\n"
 
-        ctx.text((i * max_width * 42 + 64, start_y),
+        extra_buffer = (width - max_width * 42 * columns) / \
+            (columns - 1) * i
+
+        ctx.text((i * max_width * 42 + 64 + extra_buffer, start_y),
                  string, (0, 0, 0), font, spacing=18)
 
     search_image.save('wordsearch.png')
