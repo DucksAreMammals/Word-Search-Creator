@@ -4,14 +4,11 @@ from PIL import Image, ImageDraw, ImageFont
 import math
 
 min = math.inf
-positions = []
 
 answer_key = []
 
 
 def main():
-    global positions
-
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
                'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
@@ -62,9 +59,6 @@ def main():
     print()
 
     if wordsearch != None:
-        for row in wordsearch:
-            positions.append(row.copy())
-
         for y, row in enumerate(wordsearch[0]):
             for x, letter in enumerate(row):
                 if letter == None:
@@ -156,8 +150,6 @@ def place_word(wordlist, wordsearch):
 
 
 def create_html(wordsearch, words):
-    global positions
-
     with open('wordsearch.html', 'w') as file:
         file.write(
             '<!doctype html><html><head><title>Wordsearch</title><style>html{font-family:monospace;font-size:2em;white-space:nowrap;text-align:center}div{border:3px solid black;border-radius:10px;margin 1em;padding:.25em .5em;display:inline-block}table{text-align:left;margin:2em 0;width:100%}span{color:blue}td{padding-left:1em}</style></head><body><div>')
@@ -191,7 +183,7 @@ def create_image(wordsearch, words):
     height = len(wordsearch[0]) * 64 + 64
 
     max_width = max([len(word) for word in words])
-    columns = width // (max_width * 64)
+    columns = width // (max_width * 39 + 64)
 
     search_image = Image.new(
         'RGB', (width, height + math.ceil(len(words) / columns) * 76 + 64), (255, 255, 255))
