@@ -183,24 +183,6 @@ def create_html(wordsearch, words):
 
         file.write('</table>')
 
-        # file.write('<div>')
-
-        # for y, row in enumerate(wordsearch):
-        #     for x, letter in enumerate(row):
-        #         file.write('&nbsp')
-
-        #         if positions[y][x] != None:
-        #             file.write('<span>')
-
-        #         file.write(letter)
-
-        #         if positions[y][x] != None:
-        #             file.write('</span>')
-
-        #     file.write('<br>')
-
-        # file.write('</div>')
-
         file.write('</body></html>')
 
 
