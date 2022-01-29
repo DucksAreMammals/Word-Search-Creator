@@ -235,7 +235,7 @@ def draw_wordsearch(ctx, wordsearch, words, font, width, height, columns, max_wi
     bottom = height - margin - line_width / 2
 
     shape = (start_corner, start_corner, right, start_corner, right, bottom,
-             start_corner, bottom, start_corner, start_corner, start_corner, right)
+             start_corner, bottom, start_corner, start_corner, right, start_corner)
 
     ctx.line(shape, (0, 0, 0), line_width, 'curve')
 
