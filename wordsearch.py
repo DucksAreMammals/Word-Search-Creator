@@ -125,6 +125,9 @@ def place_word(wordlist, wordsearch):
 
     positions = strong_positions + weak_positions
 
+    if random.random() > 0.95:
+        random.shuffle(positions)
+
     for x, y, dir_x, dir_y in positions:
         added_wordsearch = [[], []]
 
