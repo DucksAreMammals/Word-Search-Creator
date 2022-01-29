@@ -183,7 +183,7 @@ def create_image(wordsearch, words):
     height = len(wordsearch[0]) * 64 + 64
 
     max_width = max([len(word) for word in words])
-    columns = width // (max_width * 39 + 64)
+    columns = width // (max_width * 42)
 
     search_image = Image.new(
         'RGB', (width, height + math.ceil(len(words) / columns) * 76 + 64), (255, 255, 255))
@@ -193,6 +193,18 @@ def create_image(wordsearch, words):
 
     draw_wordsearch(ctx, wordsearch, words, font,
                     width, height, columns, max_width)
+
+    start_y = height + 64
+
+    for i in range(columns):
+        string = ""
+
+        for word in words[i * math.ceil(len(words) / columns): (i + 1) * math.ceil(len(words) / columns)]:
+            string += word
+            string += "\n"
+
+        ctx.text((i * max_width * 42 + 64, start_y),
+                 string, (0, 0, 0), font, spacing=18)
 
     search_image.save('wordsearch.png')
 
@@ -236,20 +248,6 @@ def draw_wordsearch(ctx, wordsearch, words, font, width, height, columns, max_wi
     for y, row in enumerate(wordsearch[0]):
         for x, letter in enumerate(row):
             ctx.text((x * 64 + 40, y * 64 + 30), letter, (0, 0, 0), font)
-
-    # Draw words
-
-    start_y = height + 64
-
-    for i in range(columns):
-        string = ""
-
-        for word in words[i * math.ceil(len(words) / columns): (i + 1) * math.ceil(len(words) / columns)]:
-            string += word
-            string += "\n"
-
-        ctx.text((i * max_width * 64 + 64, start_y),
-                 string, (0, 0, 0), font, spacing=18)
 
 
 def print_search(wordsearch):
