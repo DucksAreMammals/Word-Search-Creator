@@ -9,6 +9,8 @@ answer_key = []
 
 
 def main():
+    remove_duplicates = True
+
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
                'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
@@ -49,8 +51,9 @@ def main():
                     if letter in letters:
                         real_word += letter
 
-                unformatted_words.append(word)
-                words.append(real_word)
+                if remove_duplicates and not real_word in words:
+                    unformatted_words.append(word)
+                    words.append(real_word)
 
     wordsearch = [[[None for i in range(width)] for j in range(height)], []]
 
@@ -105,6 +108,7 @@ def place_word(wordlist, wordsearch):
                 for x in range(min_x, max_x + 1):
                     for y in range(min_y, max_y + 1):
                         strong = False
+                        too_strong = True
                         can_place = True
                         for i, letter in enumerate(wordlist[0]):
                             word_letter = wordsearch[0][y+i*dir_y][x+i*dir_x]
@@ -113,8 +117,10 @@ def place_word(wordlist, wordsearch):
                                 strong = True
                             elif word_letter != None:
                                 can_place = False
+                            else:
+                                too_strong = False
 
-                        if can_place:
+                        if can_place and not too_strong:
                             if strong:
                                 strong_positions.append((x, y, dir_x, dir_y))
                             else:
